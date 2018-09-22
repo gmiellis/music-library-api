@@ -15,3 +15,12 @@ exports.list = (req, res) => {
     res.json(artists);
   });
 };
+
+exports.get = (req, res) => {
+  Artist.findById(req.params.artistId, (err, artist) => {
+    if (err) {
+      res.json('Something went wrong');
+    }
+    res.json(artist);
+  });
+};

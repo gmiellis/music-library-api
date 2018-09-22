@@ -16,5 +16,6 @@ app.use(bodyParser.json());
 app.get('/', (req, res) => res.send('Hello MongoDb!'));
 app.post('/artist', Artist.post);
 app.get('/artist', Artist.list);
+app.get('/artist/:artistId', Artist.get);
 
 app.listen(3000, () => console.log('It works!'));
