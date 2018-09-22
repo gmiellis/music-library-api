@@ -1,3 +1,6 @@
 {
-  "extends": "mcr-codes"
+  "env": {
+    "jest": true
+  },
+  "extends": "airbnb-base"
 }
