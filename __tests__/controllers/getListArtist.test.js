@@ -10,9 +10,10 @@ require('dotenv').config({
 });
 
 describe('Artist List GET Endpoint', () => {
-    beforeAll((done) => {
-      mongoose.connect(process.env.TEST_DATABASE_CONN, done);
-    });
+  beforeAll((done) => {
+    mongoose.connect(process.env.TEST_DATABASE_CONN,
+      { useNewUrlParser: true }, done);
+  });
 
     it('should retrieve an Artist List from the database', (done) => {
         const artists = [
@@ -20,31 +21,30 @@ describe('Artist List GET Endpoint', () => {
             { name: 'jamal', genre: '90s hiphop' },
             { name: 'Jeru the Damaja', genre: '90s hiphop' },
           ];
-          Artist.create(artists, (err) => {
+          // console.log(artists);
+          const input = Artist.create(artists, (err) => {
             if (err) {
               console.log(err, 'stuff went wrong');
             }
+            console.log(input);
             const request = httpMocks.createRequest({
               method: 'GET',
-              URL: '/Artist/',
+              URL: '/Artist',
             });
+            // console.log(request);
             const response = httpMocks.createResponse({
               eventEmitter: events.EventEmitter,
             });
+            // console.log(response);
             list(request, response);
             response.on('end', () => {
               const listOfArtists = JSON.parse(response._getData());
               console.log(listOfArtists);
-              const artistsNames = listOfArtists.map(e => e.name);
-              console.log(artistsNames);
-              expect(artistsNames).toEqual(expect.arrayContaining(
-                [
-                  'tame impala', 
-                  'jamal', 
-                  'Jeru the Damaja',
-                ]
-                ));
-              expect(artistsNames).toHaveLength(3);
+              // const artistsNames = listOfArtists.map(e => e.name);
+              expect(listOfArtists.map(e => e.name)).toEqual(expect.arrayContaining(
+                ['tame impala', 'jamal', 'Jeru the Damaja'] 
+              ));
+              expect(listOfArtists).toHaveLength(3);
               done();
             });
         });
@@ -57,7 +57,7 @@ describe('Artist List GET Endpoint', () => {
         done();
       });
     });
-    afterAll(() => {
+    afterAll((done) => {
       mongoose.connection.close();
     });
 });
