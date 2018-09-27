@@ -6,14 +6,16 @@ const { deleteArtist } = require('../../controllers/artist');
 const Artist = require('../../models/artist');
 
 require('dotenv').config({
-    path: path.join(__dirname, '../../settings.env'),
-  });
+  path: path.join(__dirname, '../../settings.env'),
+});
 
 describe('delete Artist endpoint', () => {
-    beforeAll((done) => {
-        mongoose.connect(process.env.TEST_DATABASE_CONN,
-          { useNewUrlParser: true }, done);
-      });
+  beforeAll((done) => {
+    mongoose.connect(
+      process.env.TEST_DATABASE_CONN,
+      { useNewUrlParser: true }, done
+    );
+  });
 
   it('Should delete an artist when DELETE endpoint is called', (done) => {
     const artist = new Artist({ name: 'Coldplay', genre: 'Sad' });
@@ -44,11 +46,12 @@ describe('delete Artist endpoint', () => {
     Artist.collection.drop((e) => {
       if (e) {
         console.log(e);
-      };
+      }
       done();
     });
   });
   afterAll((done) => {
     mongoose.connection.close();
+    done();
   });
 });

@@ -11,10 +11,12 @@ require('dotenv').config({
 
 describe('Artist GET Endpoint', () => {
   beforeAll((done) => {
-    mongoose.connect(process.env.TEST_DATABASE_CONN,
-      { useNewUrlParser: true }, done);
+    mongoose.connect(
+      process.env.TEST_DATABASE_CONN,
+      { useNewUrlParser: true }, done
+    );
   });
-  
+
   it('should retrieve Artist record from database', (done) => {
     const artist = new Artist({ name: 'Wu-Tang Clan', genre: 'HipHop' });
     artist.save((err, artistCreated) => {
@@ -26,7 +28,7 @@ describe('Artist GET Endpoint', () => {
         URL: '/Artist',
         params: {
           artistId: artistCreated._id,
-        }
+        },
       });
       const response = httpMocks.createResponse({
         eventEmitter: events.EventEmitter,
@@ -35,7 +37,7 @@ describe('Artist GET Endpoint', () => {
       get(request, response);
 
       response.on('end', () => {
-        let artistFound = JSON.parse(response._getData());
+        const artistFound = JSON.parse(response._getData());
         expect(artistFound.name).toBe('Wu-Tang Clan');
         expect(artistFound.genre).toBe('HipHop');
         done();
@@ -52,5 +54,6 @@ describe('Artist GET Endpoint', () => {
   });
   afterAll((done) => {
     mongoose.connection.close();
+    done();
   });
 });

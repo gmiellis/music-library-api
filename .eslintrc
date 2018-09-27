@@ -2,5 +2,5 @@
   "env": {
     "jest": true
   },
-  "extends": "airbnb-base"
+  "extends": "mcr-codes"
 }
